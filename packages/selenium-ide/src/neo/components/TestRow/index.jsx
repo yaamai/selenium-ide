@@ -99,6 +99,7 @@ class TestRow extends React.Component {
     super(props)
     this.addCommand = this.addCommand.bind(this)
     this.copy = this.copy.bind(this)
+    this.copyJson = this.copyJson.bind(this)
     this.cut = this.cut.bind(this)
     this.paste = this.paste.bind(this)
     this.select = this.select.bind(this)
@@ -213,6 +214,13 @@ class TestRow extends React.Component {
       this.props.addCommand(index)
     }
   }
+  copyJson() {
+    document.oncopy = function(event) {
+      event.clipboardData.setData('text/plain', JSON.stringify(this.props.command.export()));
+      event.preventDefault();
+    }.bind(this);
+    document.execCommand('copy', false, null);
+  }
   copy() {
     this.props.copyToClipboard(this.props.command)
   }
@@ -271,6 +279,12 @@ class TestRow extends React.Component {
             onClick={this.copy}
           >
             Copy
+          </ListMenuItem>
+          <ListMenuItem
+            label={parse('j', { primaryKey: true })}
+            onClick={this.copyJson}
+          >
+            Copy JSON
           </ListMenuItem>
           <ListMenuItem
             label={parse('v', { primaryKey: true })}
