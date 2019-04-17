@@ -358,7 +358,7 @@ export default class WebDriverExecutor {
   async doAssertAlert(expectedText) {
     const alert = await this.driver.switchTo().alert()
     const actualText = await alert.getText()
-    if (actualText !== expectedText) {
+    if (!actualText.includes(expectedText)) {
       throw new AssertionError(
         "Actual alert text '" +
           actualText +
